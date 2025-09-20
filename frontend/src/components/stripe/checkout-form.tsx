@@ -5,9 +5,14 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
+import { FaCircleExclamation } from 'react-icons/fa6';
+import { Alert, AlertTitle } from '../ui/alert';
 import { Button } from '../ui/button';
+import { DialogBody, DialogFooter } from '../ui/dialog';
 
-const CheckoutForm = () => {
+type PaymentButtonProps = { orderDetails: any };
+
+const CheckoutForm = ({ orderDetails }: PaymentButtonProps) => {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -35,12 +40,27 @@ const CheckoutForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded border p-4">
-      <PaymentElement />
-      <Button type="submit" disabled={!stripe || loading}>
-        {loading ? 'Processing...' : 'Pay €10'}
-      </Button>
-      {message && <p className="mt-2 text-red-600">{message}</p>}
+    <form onSubmit={handleSubmit}>
+      <DialogBody>
+        {message ? (
+          <Alert className="mb-layout" variant="destructive">
+            <FaCircleExclamation />
+            <AlertTitle>{message}</AlertTitle>
+          </Alert>
+        ) : null}
+
+        <PaymentElement />
+      </DialogBody>
+
+      <DialogFooter className="flex justify-end">
+        <Button type="submit" disabled={!stripe || loading}>
+          {loading
+            ? 'Processing...'
+            : orderDetails?.amount
+              ? `Pay €${orderDetails?.amount / 100}`
+              : 'Pay'}
+        </Button>
+      </DialogFooter>
     </form>
   );
 };

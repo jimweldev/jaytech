@@ -252,7 +252,7 @@ const UpdateUserDialog = ({
                             fieldState.invalid ? 'invalid' : '',
                           )}
                           classNamePrefix="react-select"
-                          options={convertToSelectOptions(['Main', 'Guest'])}
+                          options={convertToSelectOptions(['Main', 'Customer'])}
                           value={field.value}
                           onChange={field.onChange}
                         />
