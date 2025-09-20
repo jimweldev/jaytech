@@ -15,6 +15,7 @@ use App\Http\Controllers\User\UserImageController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\ProductVoucherController;
 use App\Http\Controllers\Product\ProductBookingController;
+use App\Http\Controllers\DropPointController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('', function () {
@@ -127,6 +128,10 @@ Route::middleware('auth.middleware')->group(function () {
     // ==============
     // === BOOKINGS
     Route::resource('/bookings', ProductBookingController::class);
+
+    // ==============
+    // === DROP POINTS
+    Route::resource('/drop-points', DropPointController::class);
 });
 
 // ===================================================================

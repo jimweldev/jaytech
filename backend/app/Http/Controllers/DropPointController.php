@@ -1,24 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Product;
+namespace App\Http\Controllers;
 
 use App\Helpers\QueryHelper;
-use App\Http\Controllers\Controller;
-use App\Models\Product\ProductVoucher;
 use Illuminate\Http\Request;
-use Stripe\Stripe;
-use Stripe\PaymentIntent;
 
-class ProductVoucherController extends Controller {
-    /**
-     * Display a paginated list of records with optional filtering and search.
-     */
+use App\Models\DropPoints;
+
+class DropPointController extends Controller
+{
     public function index(Request $request) {
         $queryParams = $request->all();
 
         try {
             // Initialize the query builder
-            $query = ProductVoucher::query();
+            $query = DropPoints::query();
 
             // Define the default query type
             $type = 'paginate';
@@ -31,8 +27,7 @@ class ProductVoucherController extends Controller {
                 // Apply search conditions to the query
                 $query->where(function ($query) use ($search) {
                     $query->where('id', 'LIKE', '%'.$search.'%')
-                        ->orWhere('code', 'LIKE', '%'.$search.'%')
-                        ->orWhere('amount', 'LIKE', '%'.$search.'%');
+                        ->orWhere('name', 'LIKE', '%'.$search.'%');
                 });
             }
 
@@ -65,12 +60,9 @@ class ProductVoucherController extends Controller {
         }
     }
 
-    /**
-     * Display the specified record.
-     */
     public function show($id) {
         // Find the record by ID
-        $record = ProductVoucher::where('id', $id)
+        $record = DropPoints::where('id', $id)
             ->first();
 
         if (!$record) {
@@ -84,13 +76,10 @@ class ProductVoucherController extends Controller {
         return response()->json($record, 200);
     }
 
-    /**
-     * Store a newly created record in storage.
-     */
     public function store(Request $request) {
         try {
             // create a new record
-            $record = ProductVoucher::create($request->all());
+            $record = DropPoints::create($request->all());
 
             // Return the created record
             return response()->json($record, 201);
@@ -103,13 +92,10 @@ class ProductVoucherController extends Controller {
         }
     }
 
-    /**
-     * Update the specified record in storage.
-     */
     public function update(Request $request, $id) {
         try {
             // Find the record by ID
-            $record = ProductVoucher::find($id);
+            $record = DropPoints::find($id);
 
             if (!$record) {
                 // Return a 404 response if the record is not found
@@ -132,13 +118,10 @@ class ProductVoucherController extends Controller {
         }
     }
 
-    /**
-     * Remove the specified record from storage.
-     */
     public function destroy($id) {
         try {
             // Find the record by ID
-            $record = ProductVoucher::find($id);
+            $record = DropPoints::find($id);
 
             if (!$record) {
                 // Return a 404 response if the record is not found

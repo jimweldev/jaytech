@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { FaPenToSquare, FaTrash } from 'react-icons/fa6';
-import type { Product } from '@/04_types/product/product';
-import useProductStore from '@/05_stores/product/product-store';
-import DataTable, {
-  type DataTableColumn,
-} from '@/components/data-table/data-table';
+import type { DropPoints } from '@/04_types/dropPoints';
+import useDropPointStore from '@/05_stores/drop-points-store';
+import type { DataTableColumn } from '@/components/data-table/data-table';
+import DataTable from '@/components/data-table/data-table';
 import InputGroup from '@/components/input-group/input-group';
 import Tooltip from '@/components/tooltip/tooltip';
 import PageHeader from '@/components/typography/page-header';
@@ -13,47 +12,47 @@ import { Card, CardBody } from '@/components/ui/card';
 import { TableCell, TableRow } from '@/components/ui/table';
 import useTanstackPaginateQuery from '@/hooks/tanstack/use-tanstack-paginate-query';
 import { getDateTimezone } from '@/lib/date/get-date-timezone';
-import CreateProductDialog from './_dialogs/create-product-dialog';
-import DeleteProductDialog from './_dialogs/delete-product-dialog';
-import UpdateProductDialog from './_dialogs/update-product-dialog';
+import CreateDropPointDialog from './_dialogs/create-drop-points-dialog';
+import DeleteDropPointsDialog from './_dialogs/delete-drop-points-dialog';
+import UpdateDropPointsDialog from './_dialogs/update-drop-points-dialog';
 
-const ProductsPage = () => {
+const DropPointPage = () => {
   // Store
-  const { setSelectedProduct } = useProductStore();
+  const { setSelectedDropPoint } = useDropPointStore();
 
   // Dialog
-  const [updateProductDialogOpen, setUpdateProductDialogOpen] = useState(false);
-  const [deleteProductDialogOpen, setDeleteProductDialogOpen] = useState(false);
-  const [createProductDialogOpen, setCreateProductDialogOpen] = useState(false);
+  const [updateDropPointsDialogOpen, setUpdateDropPointsDialogOpen] =
+    useState(false);
+  const [deleteDropPointsDialogOpen, setDeleteDropPointsDialogOpen] =
+    useState(false);
+  const [createDropPointsDialogOpen, setCreateDropPointsDialogOpen] =
+    useState(false);
 
   // Tanstack query hook for pagination
-  const tasksPagination = useTanstackPaginateQuery<Product>({
-    endpoint: '/products',
-    defaultSort: 'category,brand',
+  const tasksPagination = useTanstackPaginateQuery<DropPoints>({
+    endpoint: '/drop-points',
+    defaultSort: 'id',
   });
 
   // Define table columns
   const columns: DataTableColumn[] = [
-    { label: 'Category', column: 'category,brand' },
     { label: 'Name', column: 'name' },
-    { label: 'Brand', column: 'brand' },
-    { label: 'Description', column: 'description' },
+    { label: 'Enabled', column: 'is_active' },
     { label: 'Created At', column: 'created_at', className: 'w-[200px]' },
     { label: 'Actions', className: 'w-[100px]' },
   ];
 
   // Actions buttons
   const actions = (
-    <Button size="sm" onClick={() => setCreateProductDialogOpen(true)}>
-      Add Product
+    <Button size="sm" onClick={() => setCreateDropPointsDialogOpen(true)}>
+      Add Drop Point
     </Button>
   );
 
   return (
     <>
-      <PageHeader className="mb-3">Products</PageHeader>
+      <PageHeader className="mb-3">Drop Points</PageHeader>
 
-      {/* Card */}
       <Card>
         <CardBody>
           {/* Data Table */}
@@ -64,14 +63,12 @@ const ProductsPage = () => {
           >
             {/* Render rows only if data is present */}
             {tasksPagination.data?.records
-              ? tasksPagination.data.records.map(product => (
-                  <TableRow key={product.id}>
-                    <TableCell>{product.category}</TableCell>
-                    <TableCell>{product.name}</TableCell>
-                    <TableCell>{product.brand}</TableCell>
-                    <TableCell>{product.description}</TableCell>
+              ? tasksPagination.data.records.map(task => (
+                  <TableRow key={task.id}>
+                    <TableCell>{task.name}</TableCell>
+                    <TableCell>{task.is_active ? 'Yes' : 'No'}</TableCell>
                     <TableCell>
-                      {getDateTimezone(product.created_at, 'date_time')}
+                      {getDateTimezone(task.created_at, 'date_time')}
                     </TableCell>
                     <TableCell>
                       <InputGroup size="sm">
@@ -81,8 +78,8 @@ const ProductsPage = () => {
                             variant="info"
                             size="icon-xs"
                             onClick={() => {
-                              setSelectedProduct(product);
-                              setUpdateProductDialogOpen(true);
+                              setSelectedDropPoint(task);
+                              setUpdateDropPointsDialogOpen(true);
                             }}
                           >
                             <FaPenToSquare />
@@ -95,8 +92,8 @@ const ProductsPage = () => {
                             variant="destructive"
                             size="icon-xs"
                             onClick={() => {
-                              setSelectedProduct(product);
-                              setDeleteProductDialogOpen(true);
+                              setSelectedDropPoint(task);
+                              setDeleteDropPointsDialogOpen(true);
                             }}
                           >
                             <FaTrash />
@@ -111,34 +108,28 @@ const ProductsPage = () => {
         </CardBody>
       </Card>
 
-      {/* Update Product Dialog */}
-      <UpdateProductDialog
-        open={updateProductDialogOpen}
-        setOpen={() => {
-          setUpdateProductDialogOpen(false);
-        }}
+      {/* Create Drop Point Dialog */}
+      <CreateDropPointDialog
+        open={createDropPointsDialogOpen}
+        setOpen={setCreateDropPointsDialogOpen}
         refetch={tasksPagination.refetch}
       />
 
-      {/* Delete Product Dialog */}
-      <DeleteProductDialog
-        open={deleteProductDialogOpen}
-        setOpen={() => {
-          setDeleteProductDialogOpen(false);
-        }}
+      {/* Update Drop Point Dialog */}
+      <UpdateDropPointsDialog
+        open={updateDropPointsDialogOpen}
+        setOpen={setUpdateDropPointsDialogOpen}
         refetch={tasksPagination.refetch}
       />
 
-      {/* Create Product Dialog */}
-      <CreateProductDialog
-        open={createProductDialogOpen}
-        setOpen={() => {
-          setCreateProductDialogOpen(false);
-        }}
+      {/* Delete Drop Point Dialog */}
+      <DeleteDropPointsDialog
+        open={deleteDropPointsDialogOpen}
+        setOpen={setDeleteDropPointsDialogOpen}
         refetch={tasksPagination.refetch}
       />
     </>
   );
 };
 
-export default ProductsPage;
+export default DropPointPage;

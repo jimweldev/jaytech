@@ -24,6 +24,8 @@ class ProductBookingController extends Controller {
             $type = 'paginate';
             // Apply query parameters
             QueryHelper::apply($query, $queryParams, $type);
+            // Eager load the customer relationship
+            $query->with('customer');
 
             // Check if a search parameter is present in the request
             if ($request->has('search')) {
@@ -31,9 +33,12 @@ class ProductBookingController extends Controller {
                 // Apply search conditions to the query
                 $query->where(function ($query) use ($search) {
                     $query->where('id', 'LIKE', '%'.$search.'%')
-                        ->orWhere('category', 'LIKE', '%'.$search.'%')
-                        ->orWhere('brand', 'LIKE', '%'.$search.'%')
-                        ->orWhere('description', 'LIKE', '%'.$search.'%');
+                        ->orWhereHas('customer', function ($query) use ($search) {
+                            $query->where('first_name', 'LIKE', '%'.$search.'%')
+                                  ->orWhere('last_name', 'LIKE', '%'.$search.'%');
+                        })
+                        ->orWhere('contact_number', 'LIKE', '%'.$search.'%')
+                        ->orWhere('address', 'LIKE', '%'.$search.'%');
                 });
             }
 
