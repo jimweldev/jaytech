@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('product_attachments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignId('product_id')
+                ->nullable()
+                ->constrained('products')
+                ->onDelete('cascade');
+            $table->foreignId('product_booking_note_id')
+                ->nullable()
+                ->constrained('product_booking_notes')
+                ->onDelete('cascade');
             $table->string('file_name');
             $table->text('path');
             $table->string('extension');

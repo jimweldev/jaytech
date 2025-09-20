@@ -1,4 +1,11 @@
-import { FaChartArea, FaEnvelope, FaGears, FaUsers } from 'react-icons/fa6';
+import { FaBoxes } from 'react-icons/fa';
+import {
+  FaCalendar,
+  FaChartArea,
+  FaEnvelope,
+  FaGears,
+  FaUsers,
+} from 'react-icons/fa6';
 import { Outlet } from 'react-router';
 import { type SidebarGroup } from '@/03_templates/main-template/_components/sidebar/app-sidebar';
 import MainTemplate from '@/03_templates/main-template/main-template';
@@ -32,12 +39,17 @@ const AdminLayout = () => {
         {
           title: 'Products',
           url: '/admin/products',
-          icon: FaEnvelope,
+          icon: FaBoxes,
         },
         {
           title: 'Vouchers',
           url: '/admin/vouchers',
           icon: FaEnvelope,
+        },
+        {
+          title: 'Booking',
+          url: '/admin/bookings',
+          icon: FaCalendar,
         },
       ],
     },

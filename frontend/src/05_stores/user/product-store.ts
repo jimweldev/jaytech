@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Product } from '@/04_types/product';
+import type { Product } from '@/04_types/product/product';
 
 // Define the store
 type ProductStoreProps = {

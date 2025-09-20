@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
+import BookingsPage from './01_pages/private/admin/bookings/bookings-page';
 import DashboardPage from './01_pages/private/admin/dashboard/dashboard-page';
 import MailLogsTab from './01_pages/private/admin/mails/_tabs/mail-logs/mail-logs-tab';
 import MailTemplatesTab from './01_pages/private/admin/mails/_tabs/mail-templates/mail-templates-tab';
@@ -137,6 +138,10 @@ const App = () => {
                   {
                     path: 'vouchers',
                     element: <VouchersPage />,
+                  },
+                  {
+                    path: 'bookings',
+                    element: <BookingsPage />,
                   },
                 ],
               },
