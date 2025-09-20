@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 import BookingsPage from './01_pages/private/admin/bookings/bookings-page';
 import DashboardPage from './01_pages/private/admin/dashboard/dashboard-page';
+import DropPointPage from './01_pages/private/admin/drop-points/drop-point-page';
 import MailLogsTab from './01_pages/private/admin/mails/_tabs/mail-logs/mail-logs-tab';
 import MailTemplatesTab from './01_pages/private/admin/mails/_tabs/mail-templates/mail-templates-tab';
 import MailsPage from './01_pages/private/admin/mails/mails-page';
@@ -142,6 +143,10 @@ const App = () => {
                   {
                     path: 'bookings',
                     element: <BookingsPage />,
+                  },
+                  {
+                    path: 'drop_points',
+                    element: <DropPointPage />,
                   },
                 ],
               },

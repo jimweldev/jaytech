@@ -4,6 +4,7 @@ import {
   FaChartArea,
   FaEnvelope,
   FaGears,
+  FaMapPin,
   FaUsers,
 } from 'react-icons/fa6';
 import { Outlet } from 'react-router';
@@ -50,6 +51,11 @@ const AdminLayout = () => {
           title: 'Booking',
           url: '/admin/bookings',
           icon: FaCalendar,
+        },
+        {
+          title: 'Drop Points',
+          url: '/admin/drop_points',
+          icon: FaMapPin,
         },
       ],
     },
