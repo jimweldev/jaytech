@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaPenToSquare, FaTrash } from 'react-icons/fa6';
 import type { Product } from '@/04_types/product/product';
-import useProductStore from '@/05_stores/user/product-store';
+import useProductStore from '@/05_stores/product/product-store';
 import DataTable, {
   type DataTableColumn,
 } from '@/components/data-table/data-table';

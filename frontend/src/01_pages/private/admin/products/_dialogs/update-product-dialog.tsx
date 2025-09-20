@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
-import useProductStore from '@/05_stores/user/product-store';
+import useProductStore from '@/05_stores/product/product-store';
 import { mainInstance } from '@/07_instances/main-instance';
 import FileDropzone from '@/components/dropzone/file-dropzone';
 import { Button } from '@/components/ui/button';

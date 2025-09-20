@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { CircleAlert } from 'lucide-react';
 import { toast } from 'sonner';
-import useProductBookingStore from '@/05_stores/user/product-booking-store';
+import useProductBookingStore from '@/05_stores/product/product-booking-store';
 import { mainInstance } from '@/07_instances/main-instance';
 import { Button } from '@/components/ui/button';
 import {

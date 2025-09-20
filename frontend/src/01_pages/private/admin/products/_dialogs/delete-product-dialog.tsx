@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Dialog } from '@radix-ui/react-dialog';
 import { CircleAlert } from 'lucide-react';
 import { toast } from 'sonner';
-import useProductStore from '@/05_stores/user/product-store';
+import useProductStore from '@/05_stores/product/product-store';
 import { mainInstance } from '@/07_instances/main-instance';
 import { Button } from '@/components/ui/button';
 import {

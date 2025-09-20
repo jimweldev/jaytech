@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaPenToSquare, FaTrash } from 'react-icons/fa6';
 import type { ProductBooking } from '@/04_types/product/product-booking';
-import useProductBookingStore from '@/05_stores/user/product-booking-store';
+import useProductBookingStore from '@/05_stores/product/product-booking-store';
 import type { DataTableColumn } from '@/components/data-table/data-table';
 import DataTable from '@/components/data-table/data-table';
 import InputGroup from '@/components/input-group/input-group';

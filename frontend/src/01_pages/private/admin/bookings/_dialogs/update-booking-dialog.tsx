@@ -1,4 +1,4 @@
-import useProductBookingStore from '@/05_stores/user/product-booking-store';
+import useProductBookingStore from '@/05_stores/product/product-booking-store';
 import { Button } from '@/components/ui/button';
 import { Card, CardBody } from '@/components/ui/card';
 import {
