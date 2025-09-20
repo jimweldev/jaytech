@@ -16,6 +16,10 @@ import RolesTab from './01_pages/private/admin/users/_tabs/rbac/_tabs/roles/role
 import RbacTab from './01_pages/private/admin/users/_tabs/rbac/rbac-tab';
 import UsersPage from './01_pages/private/admin/users/users-page';
 import VouchersPage from './01_pages/private/admin/vouchers/vouchers-page';
+import BagPage from './01_pages/private/customer/bag/bag-page';
+import BagTab from './01_pages/private/customer/bag/bag-tabs/bag-tab';
+import CartPage from './01_pages/private/customer/cart/cart-page';
+import CheckOutPage from './01_pages/private/customer/cart/check-out/checkout-page';
 import DataTableGridPage from './01_pages/private/examples/data-table/data-table-grid-page';
 import DataTableListGridPage from './01_pages/private/examples/data-table/data-table-list-grid-page';
 import DataTableListPage from './01_pages/private/examples/data-table/data-table-list-page';
@@ -31,18 +35,82 @@ import HomePage from './01_pages/private/home/home-page';
 import GeneralPage from './01_pages/private/settings/general-page';
 import PasswordPage from './01_pages/private/settings/password-page';
 import ProfilePage from './01_pages/private/settings/profile/profile-page';
-import LoginPage from './01_pages/public/login-page';
+// import LoginPage from './01_pages/public/login-page';
 import AdminLayout from './02_layouts/private/admin-layout';
+import CustomerLayout from './02_layouts/private/customer-layout';
 import ExamplesLayout from './02_layouts/private/examples-layout';
-import GuestLayout from './02_layouts/private/guest-layout';
 import HomeLayout from './02_layouts/private/home-layout';
 import PrivateLayout from './02_layouts/private/private-layout';
 import SettingsLayout from './02_layouts/private/settings-layout';
-import PublicLayout from './02_layouts/public/public-layout';
+// import PublicLayout from './02_layouts/public/public-layout';
 import useAuthUserStore from './05_stores/_common/auth-user-store';
 
 const App = () => {
   const { token, user } = useAuthUserStore();
+
+  const customerRoutes = [
+    // CUSTOMER LAYOUT
+    {
+      element: <CustomerLayout />,
+      children: [
+        {
+          path: '',
+          element: <h1>Home</h1>,
+        },
+        {
+          path: 'services',
+          element: <h1>Services</h1>,
+        },
+        {
+          path: 'cart',
+          children: [
+            {
+              path: '',
+              element: <CartPage />,
+            },
+            {
+              path: 'checkout',
+              element: <CheckOutPage />,
+            },
+          ],
+        },
+        {
+          path: 'bag',
+          element: <BagPage />,
+          children: [
+            {
+              path: '',
+              element: <Navigate to="all" replace />,
+            },
+            {
+              path: 'all',
+              element: <BagTab />,
+            },
+            {
+              path: 'to-pay',
+              element: <BagTab />,
+            },
+            {
+              path: 'to-ship',
+              element: <BagTab />,
+            },
+            {
+              path: 'to-receive',
+              element: <BagTab />,
+            },
+            {
+              path: 'completed',
+              element: <BagTab />,
+            },
+            {
+              path: 'cancelled',
+              element: <BagTab />,
+            },
+          ],
+        },
+      ],
+    },
+  ];
 
   const privateRoutes = [
     {
@@ -256,21 +324,8 @@ const App = () => {
             ]
           : []),
 
-        // ACCOUNT TYPE | GUEST
-        ...(user?.account_type === 'Guest'
-          ? [
-              // GUEST LAYOUT
-              {
-                element: <GuestLayout />,
-                children: [
-                  {
-                    path: '',
-                    element: <HomePage />,
-                  },
-                ],
-              },
-            ]
-          : []),
+        // ACCOUNT TYPE | CUSTOMER
+        ...(user?.account_type === 'Customer' ? customerRoutes : []),
       ],
     },
     {
@@ -280,22 +335,23 @@ const App = () => {
   ];
 
   const publicRoutes = [
-    {
-      element: <PublicLayout />,
-      children: [
-        {
-          path: '/login',
-          element: <LoginPage />,
-        },
-        {
-          path: '/register',
-          element: <div>Register</div>,
-        },
-      ],
-    },
+    // {
+    //   element: <PublicLayout />,
+    //   children: [
+    //     {
+    //       path: '/login',
+    //       element: <LoginPage />,
+    //     },
+    //     {
+    //       path: '/register',
+    //       element: <div>Register</div>,
+    //     },
+    //   ],
+    // },
+    ...customerRoutes,
     {
       path: '*',
-      element: <Navigate to="/login" replace />,
+      element: <Navigate to="/" replace />,
     },
   ];
 

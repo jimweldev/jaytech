@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 
 type CardTabListProps = {
+  variant?: 'default';
   children: React.ReactNode;
 };
 
