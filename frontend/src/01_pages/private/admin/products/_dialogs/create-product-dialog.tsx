@@ -72,8 +72,6 @@ const CreateProductDialog = ({
 
   // Handle form submission
   const onSubmit = (data: z.infer<typeof ProductSchema>) => {
-    console.log(data);
-
     setIsLoadingCreateItem(true);
 
     // Send POST request and show toast notifications

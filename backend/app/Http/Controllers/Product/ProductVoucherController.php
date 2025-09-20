@@ -31,9 +31,8 @@ class ProductVoucherController extends Controller {
                 // Apply search conditions to the query
                 $query->where(function ($query) use ($search) {
                     $query->where('id', 'LIKE', '%'.$search.'%')
-                        ->orWhere('category', 'LIKE', '%'.$search.'%')
-                        ->orWhere('brand', 'LIKE', '%'.$search.'%')
-                        ->orWhere('description', 'LIKE', '%'.$search.'%');
+                        ->orWhere('code', 'LIKE', '%'.$search.'%')
+                        ->orWhere('amount', 'LIKE', '%'.$search.'%');
                 });
             }
 
