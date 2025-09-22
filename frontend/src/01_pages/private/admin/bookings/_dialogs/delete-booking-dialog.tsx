@@ -74,7 +74,8 @@ const DeleteBookingDialog = ({
 
             {/* Item */}
             <h2 className="text-center text-2xl font-semibold">
-              {selectedProductBooking?.id}
+              {selectedProductBooking?.customer?.first_name}{' '}
+              {selectedProductBooking?.customer?.last_name}
             </h2>
           </DialogBody>
 

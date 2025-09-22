@@ -5,7 +5,9 @@ import {
   FaEnvelope,
   FaGears,
   FaMapPin,
+  FaTag,
   FaUsers,
+  FaWrench,
 } from 'react-icons/fa6';
 import { Outlet } from 'react-router';
 import { type SidebarGroup } from '@/03_templates/main-template/_components/sidebar/app-sidebar';
@@ -45,7 +47,7 @@ const AdminLayout = () => {
         {
           title: 'Vouchers',
           url: '/admin/vouchers',
-          icon: FaEnvelope,
+          icon: FaTag,
         },
         {
           title: 'Booking',
@@ -56,6 +58,11 @@ const AdminLayout = () => {
           title: 'Drop Points',
           url: '/admin/drop_points',
           icon: FaMapPin,
+        },
+        {
+          title: 'Quick Repair',
+          url: '/admin/quick_repair',
+          icon: FaWrench,
         },
       ],
     },
