@@ -27,6 +27,7 @@ class UserFactory extends Factory {
             'suffix' => fake()->optional()->suffix(),
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('P@ssword123!'),
+            'referral_code' => strtolower(fake()->regexify('[A-Za-z0-9]{6}')),
         ];
     }
 

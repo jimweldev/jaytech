@@ -12,19 +12,57 @@ use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Helpers\UserHelper;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller {
     public function register(Request $request): JsonResponse {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+        $first_name = $request->input('first_name');
+        $middle_name = $request->input('middle_name');
+        $last_name = $request->input('last_name');
+        $suffix = $request->input('suffix');
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $confirm_password = $request->input('confirm_password');
+        $referral_code = $request->input('referral_code');
+        $referrer_id = null;
+
+        // check if email already exists
+        if (User::where('email', $email)->exists()) {
+            return response()->json(['message' => 'Email already exists'], 409);
+        }
+
+        // check if password and confirm password match
+        if ($password !== $confirm_password) {
+            return response()->json(['message' => 'Passwords do not match'], 400);
+        }
+
+        if (!empty($referral_code)) {
+            // get the user with the referral_code
+            $referrer = User::where('referral_code', $referral_code)->first();
+
+            // invalid referral_code
+            if (!$referrer) {
+                return response()->json(['message' => 'Invalid refferal code'], 400);
+            }
+
+            $referrer_id = $referrer->id;
+        }
+
+        do {
+            $userReferralCode = strtolower(Str::random(6));
+        } while (User::where('referral_code', $userReferralCode)->exists());
 
         $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
+            'first_name' => $first_name,
+            'middle_name' => $middle_name,
+            'last_name' => $last_name,
+            'suffix' => $suffix,
+            'email' => $email,
+            'password' => Hash::make($password),
+            'referral_code' => $userReferralCode,
+            'referrer_code' => $referral_code,
+            'referrer_id' => $referrer_id,
+            'account_type' => 'Customer',
         ]);
 
         return $this->respondWithTokens($user);

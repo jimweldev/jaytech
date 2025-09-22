@@ -91,14 +91,16 @@ const DataTable = <T,>({
 
         <div className="flex flex-wrap justify-center gap-2">
           <div className="flex min-w-full flex-1 gap-2 @sm/main:min-w-auto">
-            <SearchInput
-              inputSize="sm"
-              placeholder="Search..."
-              defaultValue={search}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSearch(e.target.value)
-              }
-            />
+            <div className="flex-1">
+              <SearchInput
+                inputSize="sm"
+                placeholder="Search..."
+                defaultValue={search}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setSearch(e.target.value)
+                }
+              />
+            </div>
             <Select
               value={pagination.limit}
               onValueChange={value => {
@@ -106,10 +108,7 @@ const DataTable = <T,>({
                 pagination.setPage(1);
               }}
             >
-              <SelectTrigger
-                size="sm"
-                className="@lg/main:w-[75px] @lg/main:min-w-[75px]"
-              >
+              <SelectTrigger size="sm" className="w-[75px]">
                 <SelectValue placeholder="Select entry" />
               </SelectTrigger>
               <SelectContent>

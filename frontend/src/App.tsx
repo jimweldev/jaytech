@@ -20,6 +20,7 @@ import BagPage from './01_pages/private/customer/bag/bag-page';
 import BagTab from './01_pages/private/customer/bag/bag-tabs/bag-tab';
 import CartPage from './01_pages/private/customer/cart/cart-page';
 import CheckOutPage from './01_pages/private/customer/cart/check-out/checkout-page';
+import CustomerHomePage from './01_pages/private/customer/home/home-page';
 import DataTableGridPage from './01_pages/private/examples/data-table/data-table-grid-page';
 import DataTableListGridPage from './01_pages/private/examples/data-table/data-table-list-grid-page';
 import DataTableListPage from './01_pages/private/examples/data-table/data-table-list-page';
@@ -55,7 +56,7 @@ const App = () => {
       children: [
         {
           path: '',
-          element: <h1>Home</h1>,
+          element: <CustomerHomePage />,
         },
         {
           path: 'services',
@@ -83,27 +84,7 @@ const App = () => {
               element: <Navigate to="all" replace />,
             },
             {
-              path: 'all',
-              element: <BagTab />,
-            },
-            {
-              path: 'to-pay',
-              element: <BagTab />,
-            },
-            {
-              path: 'to-ship',
-              element: <BagTab />,
-            },
-            {
-              path: 'to-receive',
-              element: <BagTab />,
-            },
-            {
-              path: 'completed',
-              element: <BagTab />,
-            },
-            {
-              path: 'cancelled',
+              path: ':bagTab',
               element: <BagTab />,
             },
           ],

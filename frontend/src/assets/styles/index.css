@@ -168,3 +168,12 @@
 html {
   font-size: var(--font-size, 1rem);
 }
+
+#myCarousel {
+  --f-carousel-gap: 10px;
+  --f-carousel-slide-width: 300px;
+  --f-carousel-slide-padding: 50px;
+  --f-carousel-slide-bg: #eee;
+
+  --f-progressbar-color: #ff3520;
+}

@@ -18,6 +18,10 @@ return new class extends Migration {
             $table->string('avatar_path')->nullable();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('referral_code')->unique();
+            $table->string('referrer_code')->nullable();
+            $table->string('referrer_id')->nullable();
+            $table->boolean('referrer_is_claimed')->default(false);
             $table->boolean('is_admin')->default(false);
             $table->string('account_type')->default('Main');
             $table->softDeletes();
