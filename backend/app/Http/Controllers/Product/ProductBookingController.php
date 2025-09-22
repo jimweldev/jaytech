@@ -235,4 +235,15 @@ class ProductBookingController extends Controller {
         try {
             // Find the record by ID
             $record = ProductBooking::find($id);
+        } catch (\Exception $e) {
+            // Handle exceptions and return an error response
+            return response()->json([
+                'message' => 'An error occurred',
+                'error' => $e->getMessage(),
+            ], 400);
+        }
+
+        // Return the updated record
+        return response()->json($record, 200);
+    }
 }
