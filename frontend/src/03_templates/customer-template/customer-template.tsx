@@ -23,6 +23,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { formatName } from '@/lib/user/format-name';
 import LoginDialog from './_dialogs/login-dialog';
+import RegisterDialog from './_dialogs/register-dialog';
 
 const navItems = [
   { label: 'Home', to: '/', icon: FaHouse },
@@ -40,6 +41,7 @@ const CustomerTemplate = ({ children }: CustomerTemplateProps) => {
 
   // Dialog States
   const [openLoginDialog, setOpenLoginDialog] = useState(false);
+  const [openRegisterDialog, setOpenRegisterDialog] = useState(false);
 
   return (
     <>
@@ -98,17 +100,26 @@ const CustomerTemplate = ({ children }: CustomerTemplateProps) => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <button
-                  className="flex shrink-0 items-center gap-2"
-                  onClick={() => setOpenLoginDialog(true)}
-                >
-                  <p className="text-xs font-semibold">Login</p>
-                  <ReactImage
-                    className="outline-primary border-card inline-block size-6 items-center justify-center overflow-hidden rounded-full border-1 outline-2"
-                    src="/images/default-avatar.png"
-                    fallback="/images/default-avatar.png"
-                  />
-                </button>
+                <>
+                  <button
+                    className="flex shrink-0 items-center gap-2"
+                    onClick={() => setOpenLoginDialog(true)}
+                  >
+                    <p className="text-xs font-semibold">Login</p>
+                  </button>
+                  <div className="h-3">
+                    <Separator
+                      className="bg-foreground"
+                      orientation="vertical"
+                    />
+                  </div>
+                  <button
+                    className="flex shrink-0 items-center gap-2"
+                    onClick={() => setOpenRegisterDialog(true)}
+                  >
+                    <p className="text-xs font-semibold">Register</p>
+                  </button>
+                </>
               )}
             </div>
           </div>
@@ -198,7 +209,7 @@ const CustomerTemplate = ({ children }: CustomerTemplateProps) => {
           <div className="bg-card">3</div>
         </div>
       </div> */}
-        <div className="customer-container p-layout">
+        <div className="customer-container p-layout @container/main">
           {/* <Card>
           <CardBody>
             <CardTitle className="mb-2">Categories</CardTitle>
@@ -272,6 +283,10 @@ const CustomerTemplate = ({ children }: CustomerTemplateProps) => {
       </div>
 
       <LoginDialog open={openLoginDialog} setOpen={setOpenLoginDialog} />
+      <RegisterDialog
+        open={openRegisterDialog}
+        setOpen={setOpenRegisterDialog}
+      />
     </>
   );
 };

@@ -19,6 +19,7 @@ use App\Http\Controllers\DropPointController;
 use App\Http\Controllers\Product\ProductModelController;
 use App\Http\Controllers\Product\ProductModelServicesController;
 use App\Http\Controllers\Product\ServicesController;
+use App\Http\Controllers\User\UserCartController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('', function () {
@@ -63,6 +64,10 @@ Route::middleware('auth.middleware')->group(function () {
     // ==============
     // === USER IMAGES
     Route::resource('/user-images', UserImageController::class);
+    
+    // ==============
+    // === USER CARTS
+    Route::resource('/user-carts', UserCartController::class);
 
     // ===================================================================
     // ===================================================================
@@ -130,6 +135,8 @@ Route::middleware('auth.middleware')->group(function () {
     
     // ==============
     // === BOOKINGS
+    // get the bookings of authenticated user
+    Route::get('/bookings/user', [ProductBookingController::class, 'getAllAuthUserProductBookings']);
     Route::resource('/bookings', ProductBookingController::class);
 
     // ==============

@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
             $table->string('tracking_year')->index();
             $table->string('tracking_sequence')->index();
+            $table->string('label')->index();
+            $table->decimal('amount', 10, 2);
+            $table->string('status')->index();
             $table->string('address');
             $table->string('contact_number');
             $table->date('booking_date');

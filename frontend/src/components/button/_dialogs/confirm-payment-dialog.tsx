@@ -1,25 +1,84 @@
 import { useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTitle } from '@radix-ui/react-dialog';
-import { Elements } from '@stripe/react-stripe-js';
+import {
+  Elements,
+  PaymentElement,
+  useElements,
+  useStripe,
+} from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
-import { mainInstance } from '@/07_instances/main-instance';
-import CheckoutForm from '@/components/stripe/checkout-form';
-import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
+import { FaCircleExclamation } from 'react-icons/fa6';
+import { Alert, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from '@/components/ui/dialog';
 
 const stripePromise = loadStripe(
   import.meta.env.VITE_STRIPE_PUBLIC_KEY as string,
 );
 
-// Component Props
 type ConfirmPaymentDialogProps = {
   open: boolean;
   setOpen: (value: boolean) => void;
   clientSecret: string;
   orderDetails: any;
+};
+
+const ConfirmPaymentForm = ({ orderDetails }: { orderDetails: any }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!stripe || !elements) return;
+
+    setLoading(true);
+    setMessage('');
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: `${window.location.origin}/payment-success`,
+      },
+    });
+
+    if (error) {
+      setMessage(error.message ?? 'Payment failed');
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <DialogBody>
+        {message ? (
+          <Alert className="mb-layout" variant="destructive">
+            <FaCircleExclamation />
+            <AlertTitle>{message}</AlertTitle>
+          </Alert>
+        ) : null}
+
+        <PaymentElement />
+      </DialogBody>
+
+      <DialogFooter className="flex justify-end">
+        <Button type="submit" disabled={!stripe || loading}>
+          {loading
+            ? 'Processing...'
+            : orderDetails?.amount
+              ? `Pay €${orderDetails?.amount / 100}`
+              : 'Pay'}
+        </Button>
+      </DialogFooter>
+    </form>
+  );
 };
 
 const ConfirmPaymentDialog = ({
@@ -35,7 +94,7 @@ const ConfirmPaymentDialog = ({
           <DialogTitle>Confirm Payment</DialogTitle>
         </DialogHeader>
         <Elements stripe={stripePromise} options={{ clientSecret }}>
-          <CheckoutForm orderDetails={orderDetails} />
+          <ConfirmPaymentForm orderDetails={orderDetails} />
         </Elements>
       </DialogContent>
     </Dialog>

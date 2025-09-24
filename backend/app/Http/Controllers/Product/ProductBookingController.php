@@ -166,4 +166,84 @@ class ProductBookingController extends Controller {
             ], 400);
         }
     }
+
+    // AUTH USER
+    /**
+     * Display a paginated list of records with optional filtering and search.
+     */
+    public function getAllAuthUserProductBookings(Request $request) {
+        $authUser = $request->user();
+
+        $queryParams = $request->all();
+
+        try {
+            // Initialize the query builder
+            $query = ProductBooking::where('customer_id', $authUser->id);
+
+            // Define the default query type
+            $type = 'paginate';
+            // Apply query parameters
+            QueryHelper::apply($query, $queryParams, $type);
+            // Eager load the customer relationship
+            $query->with('customer');
+
+            // Check if a search parameter is present in the request
+            if ($request->has('search')) {
+                $search = $request->input('search');
+                // Apply search conditions to the query
+                $query->where(function ($query) use ($search) {
+                    $query->where('id', 'LIKE', '%'.$search.'%')
+                        ->orWhereHas('customer', function ($query) use ($search) {
+                            $query->where('first_name', 'LIKE', '%'.$search.'%')
+                                  ->orWhere('last_name', 'LIKE', '%'.$search.'%');
+                        })
+                        ->orWhere('contact_number', 'LIKE', '%'.$search.'%')
+                        ->orWhere('address', 'LIKE', '%'.$search.'%');
+                });
+            }
+
+            // Get the total count of records matching the query
+            $totalRecords = $query->count();
+
+            // Retrieve pagination parameters from the request
+            $limit = $request->input('limit', 10);
+            $page = $request->input('page', 1);
+            // Apply limit and offset to the query
+            QueryHelper::applyLimitAndOffset($query, $limit, $page);
+
+            // Execute the query and get the records
+            $records = $query->get();
+
+            // Return the records and pagination info
+            return response()->json([
+                'records' => $records,
+                'meta' => [
+                    'total_records' => $totalRecords,
+                    'total_pages' => ceil($totalRecords / $limit),
+                ],
+            ], 200);
+        } catch (\Exception $e) {
+            // Handle exceptions and return an error response
+            return response()->json([
+                'message' => 'An error occurred',
+                'error' => $e->getMessage(),
+            ], 400);
+        }
+    }
+
+    public function checkoutProductBooking(Request $request, $id) {
+        try {
+            // Find the record by ID
+            $record = ProductBooking::find($id);
+        } catch (\Exception $e) {
+            // Handle exceptions and return an error response
+            return response()->json([
+                'message' => 'An error occurred',
+                'error' => $e->getMessage(),
+            ], 400);
+        }
+
+        // Return the updated record
+        return response()->json($record, 200);
+    }
 }
