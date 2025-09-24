@@ -1,6 +1,8 @@
 import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
+// ---------- Card ----------
 function Card({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
@@ -14,16 +16,41 @@ function Card({ className, ...props }: React.ComponentProps<'div'>) {
   );
 }
 
-function CardHeader({ className, ...props }: React.ComponentProps<'div'>) {
+// ---------- CardHeader with variants ----------
+const cardHeaderVariants = cva('p-layout border-b', {
+  variants: {
+    align: {
+      left: 'text-left',
+      center: 'text-center',
+      right: 'text-right',
+    },
+    size: {
+      default: 'p-4',
+      compact: 'p-0',
+      spacious: 'p-6',
+    },
+  },
+  defaultVariants: {
+    align: 'left',
+    size: 'default',
+  },
+});
+
+interface CardHeaderProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof cardHeaderVariants> {}
+
+function CardHeader({ className, align, size, ...props }: CardHeaderProps) {
   return (
     <div
       data-slot="card-header"
-      className={cn('p-layout border-b', className)}
+      className={cn(cardHeaderVariants({ align, size }), className)}
       {...props}
     />
   );
 }
 
+// ---------- Other subcomponents ----------
 function CardBody({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div

@@ -60,8 +60,8 @@ const AdminLayout = () => {
           icon: FaMapPin,
         },
         {
-          title: 'Quick Repair',
-          url: '/admin/quick_repair',
+          title: 'Services',
+          url: '/admin/services',
           icon: FaWrench,
         },
       ],

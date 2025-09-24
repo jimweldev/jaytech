@@ -16,6 +16,9 @@ use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\ProductVoucherController;
 use App\Http\Controllers\Product\ProductBookingController;
 use App\Http\Controllers\DropPointController;
+use App\Http\Controllers\Product\ProductModelController;
+use App\Http\Controllers\Product\ProductModelServicesController;
+use App\Http\Controllers\Product\ServicesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('', function () {
@@ -132,6 +135,30 @@ Route::middleware('auth.middleware')->group(function () {
     // ==============
     // === DROP POINTS
     Route::resource('/drop-points', DropPointController::class);
+
+    // ==============
+    // === PRODUCT CATEGORIES
+    // Route::resource('/products/categories', ProductCategoryController::class);
+
+    // ==============
+    // === PRODUCT BRANDS
+    // Route::resource('/products/brands', ProductBrandController::class);
+
+    // ==============
+    // === PRODUCT MODELS
+    Route::resource('/models', ProductModelController::class);
+
+    // ==============
+
+    // === PRODUCT MODEL SERVICES
+    Route::resource('/product-services', ProductModelServicesController::class);
+    // ==============
+
+    // === SERVICES
+    Route::resource('/services', ServicesController::class);
+    Route::get('/select/services', [ServicesController::class, 'getSelectServices']);
+
+
 });
 
 // ===================================================================
