@@ -7,6 +7,7 @@ import useProductStore from '@/05_stores/product/product-store';
 import { mainInstance } from '@/07_instances/main-instance';
 import FileDropzone from '@/components/dropzone/file-dropzone';
 import { Button } from '@/components/ui/button';
+import { Card, CardBody, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
   DialogBody,
@@ -27,6 +28,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { handleRejectedFiles } from '@/lib/react-dropzone/handle-rejected-files';
 import { mergeUniqueFiles } from '@/lib/react-dropzone/merge-unique-files';
+import AddProductModel from './_components/product-model-section';
 
 type UpdateProductDialogProps = {
   open: boolean;
@@ -61,7 +63,6 @@ const UpdateProductDialog = ({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
       category: '',
-      name: '',
       brand: '',
       description: '',
       attachments: [],
@@ -122,119 +123,138 @@ const UpdateProductDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent size="xl">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            {/* Dialog header */}
-            <DialogHeader>
-              <DialogTitle>Update Product</DialogTitle>
-            </DialogHeader>
+      <DialogContent size="xxl">
+        {/* Dialog header */}
+        <DialogHeader>
+          <DialogTitle>Update Product</DialogTitle>
+        </DialogHeader>
 
-            {/* Dialog body */}
-            <DialogBody>
-              <div className="grid grid-cols-12 gap-3">
-                <FormField
-                  control={form.control}
-                  name="attachments"
-                  render={({ field, fieldState }) => (
-                    <FormItem className="col-span-12">
-                      <FormLabel>Images</FormLabel>
-                      <FormControl>
-                        <FileDropzone
-                          isInvalid={fieldState.invalid}
-                          // setFiles={field.onChange}
-                          files={field.value}
-                          onDrop={(acceptedFiles, rejectedFiles) => {
-                            const mergedFiles = mergeUniqueFiles(
-                              field.value,
-                              acceptedFiles,
-                            );
+        {/* Dialog body */}
+        <DialogBody>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Product Details</CardTitle>
+                </CardHeader>
+                <CardBody>
+                  <div className="grid grid-cols-12 gap-3">
+                    <FormField
+                      control={form.control}
+                      name="attachments"
+                      render={({ field, fieldState }) => (
+                        <FormItem className="col-span-12">
+                          <FormLabel>Images</FormLabel>
+                          <FormControl>
+                            <FileDropzone
+                              isInvalid={fieldState.invalid}
+                              // setFiles={field.onChange}
+                              files={field.value}
+                              onDrop={(acceptedFiles, rejectedFiles) => {
+                                const mergedFiles = mergeUniqueFiles(
+                                  field.value,
+                                  acceptedFiles,
+                                );
 
-                            field.onChange(mergedFiles);
-                            handleRejectedFiles(rejectedFiles);
-                          }}
-                          onRemove={(fileToRemove: File) => {
-                            field.onChange(
-                              field.value.filter(file => file !== fileToRemove),
-                            );
-                          }}
-                          isMultiple
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                                field.onChange(mergedFiles);
+                                handleRejectedFiles(rejectedFiles);
+                              }}
+                              onRemove={(fileToRemove: File) => {
+                                field.onChange(
+                                  field.value.filter(
+                                    file => file !== fileToRemove,
+                                  ),
+                                );
+                              }}
+                              isMultiple
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="category"
-                  render={({ field }) => (
-                    <FormItem className="col-span-12">
-                      <FormLabel>Category</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <div className="col-span-12 flex items-center justify-between gap-2">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem className="col-span-12 w-full">
+                            <FormLabel>Name</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem className="col-span-12">
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                      <FormField
+                        control={form.control}
+                        name="category"
+                        render={({ field }) => (
+                          <FormItem className="col-span-12 w-full">
+                            <FormLabel>Category</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                <FormField
-                  control={form.control}
-                  name="brand"
-                  render={({ field }) => (
-                    <FormItem className="col-span-12">
-                      <FormLabel>Brand Name</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                      <FormField
+                        control={form.control}
+                        name="brand"
+                        render={({ field }) => (
+                          <FormItem className="col-span-12 w-full">
+                            <FormLabel>Brand Name</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem className="col-span-12">
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </DialogBody>
+                    <FormField
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem className="col-span-12">
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Textarea {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <div className="col-span-12 flex justify-end">
+                      <Button
+                        className="text-right"
+                        size="sm"
+                        disabled={isLoadingUpdateItem}
+                      >
+                        Submit
+                      </Button>
+                    </div>
+                  </div>
+                </CardBody>
+              </Card>
+            </form>
+          </Form>
 
-            {/* Dialog footer */}
-            <DialogFooter className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setOpen(false)}>
-                Close
-              </Button>
-              <Button type="submit" disabled={isLoadingUpdateItem}>
-                Submit
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+          {selectedProduct && <AddProductModel product={selectedProduct} />}
+        </DialogBody>
+
+        {/* Dialog footer */}
+        <DialogFooter className="flex justify-end gap-2">
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Close
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

@@ -1,7 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { CircleAlert } from 'lucide-react';
 import { toast } from 'sonner';
-import useProductBookingStore from '@/05_stores/product/product-booking-store';
 import { mainInstance } from '@/07_instances/main-instance';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,19 +9,20 @@ import {
   DialogContent,
   DialogFooter,
 } from '@/components/ui/dialog';
+import useServicesStore from '@/05_stores/services-store';
 
-type DeleteBookingDialogProps = {
+type DeleteServicesDialogProps = {
   open: boolean;
-  setOpen: (open: boolean) => void;
+  setOpen: (value: boolean) => void;
   refetch: () => void;
 };
 
-const DeleteBookingDialog = ({
+const DeleteVoucherDialog = ({
   open,
   setOpen,
   refetch,
-}: DeleteBookingDialogProps) => {
-  const { selectedProductBooking } = useProductBookingStore();
+}: DeleteServicesDialogProps) => {
+  const { selectedServices } = useServicesStore();
 
   // Track loading state for submit button
   const [isLoadingDeleteItem, setIsLoadingDeleteItem] =
@@ -34,7 +34,7 @@ const DeleteBookingDialog = ({
 
     // Send DELETE request and show toast notifications
     toast.promise(
-      mainInstance.delete(`/bookings/${selectedProductBooking?.id}`),
+      mainInstance.delete(`/services/${selectedServices?.id}`),
       {
         loading: 'Loading...',
         success: () => {
@@ -56,6 +56,7 @@ const DeleteBookingDialog = ({
       },
     );
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
@@ -67,29 +68,28 @@ const DeleteBookingDialog = ({
             <CircleAlert className="text-destructive mx-auto mb-4" size={64} />
 
             {/* Modal title */}
-            <h3 className="text-center text-xl">Cancel Booking</h3>
+            <h3 className="text-center text-xl">Delete Service</h3>
             <p className="text-muted-foreground mb-2 text-center">
-              Are you sure you want to cancel this booking?
+              Are you sure you want to delete this service?
             </p>
 
             {/* Item */}
             <h2 className="text-center text-2xl font-semibold">
-              {selectedProductBooking?.customer?.first_name}{' '}
-              {selectedProductBooking?.customer?.last_name}
+              {selectedServices?.name}
             </h2>
           </DialogBody>
 
           {/* Modal footer */}
           <DialogFooter className="flex justify-end gap-2">
             <Button variant="outline" onClick={() => setOpen(false)}>
-              Close
+              Cancel
             </Button>
             <Button
               variant="destructive"
               type="submit"
               disabled={isLoadingDeleteItem}
             >
-              Cancel Booking
+              Delete
             </Button>
           </DialogFooter>
         </form>
@@ -98,4 +98,4 @@ const DeleteBookingDialog = ({
   );
 };
 
-export default DeleteBookingDialog;
+export default DeleteVoucherDialog;

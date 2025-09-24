@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_attachments', function (Blueprint $table) {
+        Schema::create('booking_notes_attachments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignId('booking_note_id')->constrained('product_booking_notes')->onDelete('cascade');
             $table->string('file_name');
             $table->text('path');
             $table->string('extension');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_attachments');
+        Schema::dropIfExists('booking_notes_attachments');
     }
 };

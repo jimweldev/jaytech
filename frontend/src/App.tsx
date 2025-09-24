@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
+import AdminServicesPage from './01_pages/private/admin/admin-services/admin-services-page';
 import BookingsPage from './01_pages/private/admin/bookings/bookings-page';
 import DashboardPage from './01_pages/private/admin/dashboard/dashboard-page';
 import DropPointPage from './01_pages/private/admin/drop-points/drop-point-page';
@@ -196,6 +197,10 @@ const App = () => {
                   {
                     path: 'drop_points',
                     element: <DropPointPage />,
+                  },
+                  {
+                    path: 'services',
+                    element: <AdminServicesPage />,
                   },
                 ],
               },
